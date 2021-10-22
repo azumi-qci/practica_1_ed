@@ -148,6 +148,9 @@ int opcionesMenu()
   return atoi(option);
 }
 
+/**
+ * Función que captura los datos de un producto y lo guarda en el archivo
+ */
 void capturarProducto()
 {
   clearConsole();
