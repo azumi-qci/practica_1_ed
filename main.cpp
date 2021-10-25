@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -8,9 +7,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DELIMITADOR "|"
+#define DELIMITADOR " |"
 #define SEPARADOR "\n"
 #define NOMBRE_ARCHIVO "Catalogo_Dia.txt"
+#define temp "temp.txt"
 
 /**
  * Práctica 1
@@ -37,7 +37,6 @@ using std::stringstream;
 using std::system;
 using std::to_string;
 using std::toupper;
-
 // Declarar la estructura "Producto"
 
 struct Producto {
@@ -63,8 +62,10 @@ string generarCodigoProducto(const Producto &p);
 void productoToUpper(Producto &p);
 void escribirProductoEnArchivo(const Producto &p);
 void imprimir();
+void eliminarProductoLogica();
+void borrar(int pos);
 
-/**
+/*
  * Función principal
  */
 int main()
@@ -74,32 +75,27 @@ int main()
   while (true)
   {
     clearConsole();
-
     switch(opcionesMenu())
     {
       case 1: 
         capturarProducto();
-
         break;
       case 2:
         imprimir();
-
         break;
       case 3:
+        eliminarProductoLogica();
         break;
       case 4:
         break;
-
       case 5:
       {
         cout << "Saliendo del programa..." << endl;
-
         exit(0);
       }
       default:
       {
         cout << "Opción no válida" << endl;
-
         pauseConsole();
         break;
       }
@@ -135,7 +131,7 @@ int opcionesMenu()
 
   cout << "- Menú de opciones -" << endl;
   cout << "1. Insertar producto" << endl;
-  cout << "2. Mostrar productos" << endl;
+  cout << "2. Mostrar o consultar producto" << endl;
   cout << "3. Eliminar producto (forma lógica)" << endl;
   cout << "4. Generar lista de productos" << endl;
   cout << "5. Salir" << endl;
@@ -154,7 +150,6 @@ int opcionesMenu()
 void capturarProducto()
 {
   clearConsole();
-
   Producto producto;
 
   cout << "- Capturar nuevo producto -" << endl << endl;
@@ -208,28 +203,26 @@ void imprimirProducto(const Producto &p)
 void imprimir()
 {
   clearConsole();
-
   Producto p;
   string bclave;
-  ifstream archivo(NOMBRE_ARCHIVO, ios::in);
-
+  ifstream archivo(NOMBRE_ARCHIVO, ios::in);//Abrimos nuestro archivo en modo lectura
   bool encontrado = false;
 
   cout << "- Buscar producto - " << endl;
   cout << "Ingrese la clave del producto: ";
-
   cin >> bclave;
   cin.ignore();
 
-  while (!archivo.eof())
+  while (!archivo.eof())//Mientras no sea fin de archivo
   {
-    archivo >> p.code;
-    if (p.code.find(bclave) != string::npos)
+    archivo >> p.code;//Leemos codigos de nuestro archivo
+    if (p.code.find(bclave) != string::npos)//si encuentra la clave que escribimos
     {
-      encontrado = true;
-
-      cout << "clave: " << p.code << endl;    
-      archivo >> p.name;
+      encontrado = true; //nuestro bool se hace true
+      //Se hace una lectura y escritura de los datos relacionados al codigo insertado(si el codigo coincide);
+      cout << endl;
+      cout << "Clave: " << p.code << endl; 
+      archivo >> p.name; 
       cout << "Nombre:" << p.name << endl;
       archivo >> p.description;
       cout << "Descripción: " << p.description << endl;
@@ -246,14 +239,14 @@ void imprimir()
     }
   }
 
-  if (!encontrado)
+  if (!encontrado)//Si nuestro bool no cambia
   {
     cout << endl << "Producto no encontrado" << endl;
   }
 
-  if (archivo.is_open())
+  if (archivo.is_open())//Si nuestro archivo esta abierto
   {
-    archivo.close();
+    archivo.close();//Lo cerramos
   }
 
   pauseConsole();
@@ -271,7 +264,12 @@ string generarCodigoProducto(const Producto &p) {
   numeroAleatorio = rand() % 999; // Entre 0 y 999
 
   // Si el numero es menor que 100 agregamos un "0" para que sean 3 digitos
-  if (numeroAleatorio<100) codigo << "0";
+  if (numeroAleatorio<100) {
+    codigo << "0";
+    if (numeroAleatorio<10) {
+        codigo << "0";
+    }
+  }
   numero = to_string(numeroAleatorio); 
   // Seleccionar los primeros caracteres de las cadenas 
   codigo << numero;
@@ -335,8 +333,9 @@ void escribirProductoEnArchivo(const Producto &p) {
   }
 }
 
-//Eliminar producto forma logica
-/*
-void eliminarProductoFormaLogica(const Producto &p){
 
-}*/
+
+//Eliminar producto forma logica
+void eliminarProductoLogica(){
+  
+}
